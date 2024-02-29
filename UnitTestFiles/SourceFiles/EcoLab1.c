@@ -25,11 +25,243 @@
 #include "IdEcoFileSystemManagement1.h"
 #include "IdEcoLab1.h"
 
-int compareInt(const void *aPtr, const void *bPtr) {
+/* функция для сравнения int */
+int __cdecl compareInts(const void *aPtr, const void *bPtr) {
     int a = *(int *)aPtr, b = *(int *)bPtr;
     return (a > b) - (b > a);
 }
 
+/* функция для сравнения double */
+int __cdecl compareDoubles(const void *aPtr, const void *bPtr) {
+    double a = *(double *)aPtr, b = *(double *)bPtr;
+    return (a > b) - (b > a);
+}
+
+/* функция для сравнения float */
+int __cdecl compareFloats(const void *aPtr, const void *bPtr) {
+    float a = *(float *)aPtr, b = *(float *)bPtr;
+    return (a > b) - (b > a);
+}
+
+/* функция для сравнения string */
+int __cdecl compareStrings(const void *aPtr, const void *bPtr) {
+    char *a = *(char **)aPtr, *b = *(char **)bPtr;
+    return strcmp(a, b);
+}
+
+void fillArrayWithRandomInts(int *arr, int arrSize) {
+    for (size_t i = 0; i < arrSize; i ++) {
+        arr[i] = rand();
+    }
+}
+
+void testIntSort(IEcoLab1 *pIEcoLab1, FILE *file, int arrSize, IEcoMemoryAllocator1 *pIMem) {
+    clock_t start, end;
+    int* arr;
+
+    //test
+    int arrSizeForTest = 10;
+    arr = (int *) pIMem->pVTbl->Alloc(pIMem, arrSizeForTest * sizeof(int));
+    fillArrayWithRandomInts(arr, arrSizeForTest);
+    pIEcoLab1->pVTbl->qsort(pIEcoLab1, arr, arrSizeForTest, sizeof(int), compareInts);
+    for (size_t i = 0; i < arrSizeForTest - 1; i++) {
+        if (arr[i] > arr[i + 1]) {
+            printf("insertionSort doesn't work for int.\n");
+            return;
+        }
+    }
+    pIMem->pVTbl->Free(pIMem, arr);
+
+    //insertionSort
+    arr = (int *) pIMem->pVTbl->Alloc(pIMem, arrSize * sizeof(int));
+    fillArrayWithRandomInts(arr, arrSize);
+    start = clock();
+
+    pIEcoLab1->pVTbl->qsort(pIEcoLab1, arr, arrSize, sizeof(int), compareInts);
+
+    end = clock();
+    double insertionSortDuration = (double)(end - start) / CLOCKS_PER_SEC;
+    pIMem->pVTbl->Free(pIMem, arr);
+
+    //qsort
+    arr = (int *) pIMem->pVTbl->Alloc(pIMem, arrSize * sizeof(int));
+    fillArrayWithRandomInts(arr, arrSize);
+    start = clock();
+
+    qsort(arr, arrSize, sizeof(int), compareInts);
+
+    end = clock();
+    double qsortDuration = (double)(end - start) / CLOCKS_PER_SEC;
+    pIMem->pVTbl->Free(pIMem, arr);
+
+    fprintf(file, "%s,%s,%d,%lf\n", "insertSort", "int", arrSize, insertionSortDuration);
+    fprintf(file, "%s,%s,%d,%lf\n", "qsort", "int", arrSize, qsortDuration);
+}
+
+
+void fillDoubleArray(double arr[], int size) {
+    for (int i = 0; i < size; ++i) {
+        arr[i] = (double)rand() + ((double)rand() / RAND_MAX);
+    }
+}
+
+void testDoubleSort(IEcoLab1 *pIEcoLab1, FILE *file, int arrSize, IEcoMemoryAllocator1 *pIMem) {
+    clock_t start, end;
+    double* arr;
+
+    //test
+    int arrSizeForTest = 10;
+    arr = (double *) pIMem->pVTbl->Alloc(pIMem, arrSizeForTest * sizeof(double));
+    fillDoubleArray(arr, arrSizeForTest);
+    pIEcoLab1->pVTbl->qsort(pIEcoLab1, arr, arrSizeForTest, sizeof(double), compareDoubles);
+    for (size_t i = 0; i < arrSizeForTest - 1; i++) {
+        if (arr[i] > arr[i + 1]) {
+            printf("insertionSort doesn't work for double.\n");
+            return;
+        }
+    }
+    pIMem->pVTbl->Free(pIMem, arr);
+
+    //insertionSort
+    arr = (double *) pIMem->pVTbl->Alloc(pIMem, arrSize * sizeof(double));
+    fillDoubleArray(arr, arrSize);
+    start = clock();
+
+    pIEcoLab1->pVTbl->qsort(pIEcoLab1, arr, arrSize, sizeof(double), compareDoubles);
+
+    end = clock();
+    double insertionSortDuration = (double)(end - start) / CLOCKS_PER_SEC;
+    pIMem->pVTbl->Free(pIMem, arr);
+
+    //qsort
+    arr = (double *) pIMem->pVTbl->Alloc(pIMem, arrSize * sizeof(double ));
+    fillDoubleArray(arr, arrSize);
+    start = clock();
+
+    qsort(arr, arrSize, sizeof(double), compareDoubles);
+
+    end = clock();
+    double qsortDuration = (double)(end - start) / CLOCKS_PER_SEC;
+    pIMem->pVTbl->Free(pIMem, arr);
+
+    fprintf(file, "%s,%s,%d,%lf\n", "insertSort", "double", arrSize, insertionSortDuration);
+    fprintf(file, "%s,%s,%d,%lf\n", "qsort", "double", arrSize, qsortDuration);
+}
+
+void fillFloatArray(float arr[], int size) {
+    for (int i = 0; i < size; ++i) {
+        arr[i] = (float)rand() + ((float)rand() / RAND_MAX);
+    }
+}
+
+void testFloatSort(IEcoLab1 *pIEcoLab1, FILE *file, int arrSize, IEcoMemoryAllocator1 *pIMem) {
+    clock_t start, end;
+    float* arr;
+
+    //test
+    int arrSizeForTest = 10;
+    arr = (float *) pIMem->pVTbl->Alloc(pIMem, arrSizeForTest * sizeof(float));
+    fillFloatArray(arr, arrSizeForTest);
+    pIEcoLab1->pVTbl->qsort(pIEcoLab1, arr, arrSizeForTest, sizeof(float), compareFloats);
+    for (size_t i = 0; i < arrSizeForTest - 1; i++) {
+        if (arr[i] > arr[i + 1]) {
+            printf("insertionSort doesn't work for float.\n");
+            return;
+        }
+    }
+    pIMem->pVTbl->Free(pIMem, arr);
+
+    //insertionSort
+    arr = (float *) pIMem->pVTbl->Alloc(pIMem, arrSize * sizeof(float));
+    fillFloatArray(arr, arrSize);
+    start = clock();
+
+    pIEcoLab1->pVTbl->qsort(pIEcoLab1, arr, arrSize, sizeof(float), compareFloats);
+
+    end = clock();
+    double insertionSortDuration = (double)(end - start) / CLOCKS_PER_SEC;
+    pIMem->pVTbl->Free(pIMem, arr);
+
+    //qsort
+    arr = (float *) pIMem->pVTbl->Alloc(pIMem, arrSize * sizeof(float));
+    fillFloatArray(arr, arrSize);
+    start = clock();
+
+    qsort(arr, arrSize, sizeof(float), compareFloats);
+
+    end = clock();
+    double qsortDuration = (double)(end - start) / CLOCKS_PER_SEC;
+    pIMem->pVTbl->Free(pIMem, arr);
+
+    fprintf(file, "%s,%s,%d,%lf\n", "insertSort", "float", arrSize, insertionSortDuration);
+    fprintf(file, "%s,%s,%d,%lf\n", "qsort", "float", arrSize, qsortDuration);
+}
+
+
+void fillStringArray(char **arr, int arrSize, IEcoMemoryAllocator1 *pIMem) {
+    for (size_t i = 0; i < arrSize; i++) {
+        arr[i] = (char *) pIMem->pVTbl->Alloc(pIMem, 20 * sizeof(char));
+        size_t str_size = rand() % 10;
+        for (size_t j = 0; j < str_size; ++j) {
+            arr[i][j] = (char) (rand() % ('z' - 'a' + 1) + 'a');
+        }
+        arr[i][str_size] = 0;
+    }
+}
+
+void testStringSort(IEcoLab1 *pIEcoLab1, FILE *file, int arrSize, IEcoMemoryAllocator1 *pIMem) {
+    clock_t start, end;
+    char** arr;
+
+    //test
+    int arrSizeForTest = 10;
+    arr = (char **) pIMem->pVTbl->Alloc(pIMem, arrSizeForTest * sizeof(char *));
+    fillStringArray(arr, arrSizeForTest, pIMem);
+    pIEcoLab1->pVTbl->qsort(pIEcoLab1, arr, arrSizeForTest, sizeof(char *), compareStrings);
+    for (size_t i = 0; i < arrSizeForTest - 1; i++) {
+        if (strcmp(*(char **)arr, *(char **)(arr + sizeof(char))) > 0) {
+            printf("insertionSort doesn't work for string.\n");
+            return;
+        }
+    }
+
+    char ** helping_arr = arr;
+    for (size_t i = 0; i < arrSizeForTest; i++) {
+        pIMem->pVTbl->Free(pIMem, arr[i]);
+    }
+    pIMem->pVTbl->Free(pIMem, helping_arr);
+
+    //insertionSort
+    arr = (char **) pIMem->pVTbl->Alloc(pIMem, arrSize * sizeof(char *));
+    fillStringArray(arr, arrSize, pIMem);
+    start = clock();
+
+    pIEcoLab1->pVTbl->qsort(pIEcoLab1, arr, arrSize, sizeof(char *), compareStrings);
+
+    end = clock();
+    double insertionSortDuration = (double)(end - start) / CLOCKS_PER_SEC;
+    for (size_t i = 0; i < arrSize; ++i) {
+        pIMem->pVTbl->Free(pIMem, arr[i]);
+    }
+    pIMem->pVTbl->Free(pIMem, arr);
+
+    //qsort
+    arr = (char **) pIMem->pVTbl->Alloc(pIMem, arrSize * sizeof(char *));
+    fillStringArray(arr, arrSize, pIMem);
+    start = clock();
+
+    qsort(arr, arrSize, sizeof(char *), compareStrings);
+
+    end = clock();
+    double qsortDuration = (double)(end - start) / CLOCKS_PER_SEC;
+    for (size_t i = 0; i < arrSize; ++i) {
+        pIMem->pVTbl->Free(pIMem, arr[i]);
+    }
+    pIMem->pVTbl->Free(pIMem, arr);
+
+    fprintf(file, "%s,%s,%d,%lf\n", "insertSort", "string", arrSize, insertionSortDuration);
+    fprintf(file, "%s,%s,%d,%lf\n", "qsort", "string", arrSize, qsortDuration);
+}
 /*
  *
  * <сводка>
@@ -53,7 +285,9 @@ int16_t EcoMain(IEcoUnknown* pIUnk) {
     char_t* copyName = 0;
     /* Указатель на тестируемый интерфейс */
     IEcoLab1* pIEcoLab1 = 0;
-    int arr[] = {-56, 3, 4};
+
+    int arrSizes[6] = {50000, 100000, 150000, 200000, 250000, 300000};
+
 
     /* Проверка и создание системного интрефейса */
     if (pISys == 0) {
@@ -101,10 +335,17 @@ int16_t EcoMain(IEcoUnknown* pIUnk) {
         goto Release;
     }
 
-
-    result = pIEcoLab1->pVTbl->qsort(pIEcoLab1, arr, 3, sizeof(int), compareInt);
-    printf("hello world\n");
-
+    FILE * resultFile;
+    srand(time(0));
+    fopen_s(&resultFile, "result.csv", "w");
+    fprintf(resultFile, "sort,type,size,time\n");
+    for (size_t i = 0; i < 6; i++) {
+        testIntSort(pIEcoLab1, resultFile, arrSizes[i], pIMem);
+        testDoubleSort(pIEcoLab1, resultFile, arrSizes[i], pIMem);
+        testFloatSort(pIEcoLab1, resultFile, arrSizes[i], pIMem);
+        testStringSort(pIEcoLab1, resultFile, arrSizes[i], pIMem);
+        printf("+");
+    }
 
     /* Освлбождение блока памяти */
     pIMem->pVTbl->Free(pIMem, name);

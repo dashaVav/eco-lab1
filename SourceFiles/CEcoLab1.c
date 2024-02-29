@@ -109,6 +109,15 @@ uint32_t ECOCALLMETHOD CEcoLab1_Release(/* in */ struct IEcoLab1* me) {
     return pCMe->m_cRef;
 }
 
+/* копирует данные из src в dest */
+void byteCopy(void *dest, const void *src, size_t size) {
+    char *d = dest;
+    const char *s = src;
+    for (size_t i = 0; i < size; ++i) {
+        d[i] = s[i];
+    }
+}
+
 /*
  *
  * <сводка>
@@ -116,21 +125,39 @@ uint32_t ECOCALLMETHOD CEcoLab1_Release(/* in */ struct IEcoLab1* me) {
  * </сводка>
  *
  * <описание>
- *   Функция
+ *   Сортировка вставками
  * </описание>
  *
  */
-int16_t ECOCALLMETHOD CEcoLab1_qsort(/* in */ struct IEcoLab1* me, void *arrPrt, size_t size, size_t elemSize, int (*compare)(const void *, const void *)) {
+
+int16_t ECOCALLMETHOD CEcoLab1_qsort(/* in */ struct IEcoLab1* me, void *arrPrt, size_t arrSize, size_t elemSize, int (__cdecl *compare)(const void *, const void *)) {
     CEcoLab1* pCMe = (CEcoLab1*)me;
     int16_t index = 0;
 
-    printf("first elem of array = %d\n", ((int *)arrPrt)[0]);
+    /* Проверка указателей */
+    if (me == 0 || arrPrt == 0 || compare == 0) {
+        return -1;
+    }
+
+    /* Сортировка вставками */
+    char* tmp = (char*)pCMe->m_pIMem->pVTbl->Alloc(pCMe->m_pIMem, elemSize);
+
+    char *arr = (char *)arrPrt;
+
+    for (size_t i = 1; i < arrSize; ++i) {
+        byteCopy(tmp, arr + i * elemSize, elemSize);
+        size_t j = i;
+        while (j > 0 && compare(arr + (j - 1) * elemSize, tmp) > 0) {
+            byteCopy(arr + j * elemSize, arr + (j - 1) * elemSize, elemSize);
+            --j;
+        }
+        byteCopy(arr + j * elemSize, tmp, elemSize);
+    }
+
+    pCMe->m_pIMem->pVTbl->Free(pCMe->m_pIMem, tmp);
 
     return 0;
 }
-
-
-
 
 /*
  *
