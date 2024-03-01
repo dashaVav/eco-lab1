@@ -286,7 +286,7 @@ int16_t EcoMain(IEcoUnknown* pIUnk) {
     /* Указатель на тестируемый интерфейс */
     IEcoLab1* pIEcoLab1 = 0;
 
-    int arrSizes[6] = {50000, 100000, 150000, 200000, 250000, 300000};
+    int arrSizes[5] = {10000, 50000, 100000, 150000, 200000};
 
 
     /* Проверка и создание системного интрефейса */
@@ -339,7 +339,7 @@ int16_t EcoMain(IEcoUnknown* pIUnk) {
     srand(time(0));
     fopen_s(&resultFile, "result.csv", "w");
     fprintf(resultFile, "sort,type,size,time\n");
-    for (size_t i = 0; i < 6; i++) {
+    for (size_t i = 0; i < 5; i++) {
         testIntSort(pIEcoLab1, resultFile, arrSizes[i], pIMem);
         testDoubleSort(pIEcoLab1, resultFile, arrSizes[i], pIMem);
         testFloatSort(pIEcoLab1, resultFile, arrSizes[i], pIMem);
