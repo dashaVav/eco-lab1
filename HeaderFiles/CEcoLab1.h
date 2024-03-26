@@ -23,11 +23,29 @@
 #include "IEcoLab1.h"
 #include "IEcoSystem1.h"
 #include "IdEcoMemoryManager1.h"
+#include "IEcoCalculatorY.h"
+#include "IEcoCalculatorX.h"
+
 
 typedef struct CEcoLab1 {
 
     /* Таблица функций интерфейса IEcoLab1 */
     IEcoLab1VTbl* m_pVTblIEcoLab1;
+
+    /* Таблица функций интерфейса IEcoCalculatorX */
+    IEcoCalculatorYVTbl* m_pVTblIY;
+
+    /* Таблица функций интерфейса IEcoCalculatorY */
+    IEcoCalculatorXVTbl* m_pVTblIX;
+
+    /* Указатель на интерфейс */
+    IEcoCalculatorX* m_pIX;
+
+    /* Указатель на интерфейс */
+    IEcoCalculatorY* m_pIY;
+
+    /* Ссылка на интерфейс IEcoUnknown внутреннего агрегируемого компонента B */
+    IEcoUnknown*  m_pInnerUnknownB;
 
     /* Счетчик ссылок */
     uint32_t m_cRef;
