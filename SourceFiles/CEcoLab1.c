@@ -336,20 +336,20 @@ IEcoLab1VTbl g_x277FC00C35624096AFCFC125B94EEC90VTbl = {
         CEcoLab1_qsort
 };
 
-IEcoCalculatorYVTbl g_xBD6414C29096423EA90C04D77AFD1CADVTblLab2 = {
-        IEcoCalculatorY_QueryInterface,
-        IEcoCalculatorY_AddRef,
-        IEcoCalculatorY_Release,
-        IEcoCalculatorY_Multiplication,
-        IEcoCalculatorY_Division
-};
-
 IEcoCalculatorXVTbl g_x9322111622484742AE0682819447843DVTblLab2 = {
         IEcoCalculatorX_QueryInterface,
         IEcoCalculatorX_AddRef,
         IEcoCalculatorX_Release,
         IEcoCalculatorX_Addition,
         IEcoCalculatorX_Subtraction
+};
+
+IEcoCalculatorYVTbl g_xBD6414C29096423EA90C04D77AFD1CADVTblLab2 = {
+        IEcoCalculatorY_QueryInterface,
+        IEcoCalculatorY_AddRef,
+        IEcoCalculatorY_Release,
+        IEcoCalculatorY_Multiplication,
+        IEcoCalculatorY_Division
 };
 
 
