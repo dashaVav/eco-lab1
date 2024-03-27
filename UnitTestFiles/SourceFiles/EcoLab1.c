@@ -393,6 +393,12 @@ int16_t EcoMain(IEcoUnknown* pIUnk) {
         pIY->pVTbl->Release(pIY);
     }
 
+    result = pIY->pVTbl->QueryInterface(pIY, &IID_IEcoCalculatorX, (void **) &pIX);
+    if (result == 0) {
+        printf("Query IX from IY - ok\n");
+        pIX->pVTbl->Release(pIX);
+    }
+
 
 //    FILE * resultFile;
 //    srand(time(0));

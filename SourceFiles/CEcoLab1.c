@@ -135,7 +135,8 @@ int16_t ECOCALLMETHOD IEcoCalculatorX_QueryInterface (/* in */ IEcoCalculatorX* 
         return -1;
     }
 
-    return pCMe->m_pIX->pVTbl->QueryInterface(pCMe->m_pIX, riid, ppv);
+    IEcoUnknown* cast = (IEcoUnknown *)&pCMe->m_pVTblIEcoLab1;
+    return cast->pVTbl->QueryInterface(cast, riid, ppv);
 }
 
 uint32_t ECOCALLMETHOD IEcoCalculatorX_AddRef (/* in */ IEcoCalculatorX* me) {
@@ -145,7 +146,8 @@ uint32_t ECOCALLMETHOD IEcoCalculatorX_AddRef (/* in */ IEcoCalculatorX* me) {
         return -1;
     }
 
-    return pCMe->m_pIX->pVTbl->AddRef(pCMe->m_pIX);
+    IEcoUnknown* cast = (IEcoUnknown *)&pCMe->m_pVTblIEcoLab1;
+    return cast->pVTbl->AddRef(cast);
 }
 
 uint32_t ECOCALLMETHOD IEcoCalculatorX_Release (/* in */ IEcoCalculatorX* me) {
@@ -155,7 +157,8 @@ uint32_t ECOCALLMETHOD IEcoCalculatorX_Release (/* in */ IEcoCalculatorX* me) {
         return -1;
     }
 
-    return pCMe->m_pIX->pVTbl->Release(pCMe->m_pIX);
+    IEcoUnknown* cast = (IEcoUnknown *)&pCMe->m_pVTblIEcoLab1;
+    return cast->pVTbl->Release(cast);
 }
 
 int32_t ECOCALLMETHOD IEcoCalculatorX_Addition (/* in */ IEcoCalculatorX* me, /* in */  int16_t a, /* in */ int16_t b) {
@@ -187,7 +190,8 @@ int16_t ECOCALLMETHOD IEcoCalculatorY_QueryInterface (/* in */IEcoCalculatorY* m
         return -1;
     }
 
-    return pCMe->m_pIY->pVTbl->QueryInterface(pCMe->m_pIY, riid, ppv);
+    IEcoUnknown* cast = (IEcoUnknown *)&pCMe->m_pVTblIEcoLab1;
+    return cast->pVTbl->QueryInterface(cast, riid, ppv);
 }
 
 
@@ -197,8 +201,8 @@ uint32_t ECOCALLMETHOD IEcoCalculatorY_AddRef (/* in */ IEcoCalculatorY* me) {
     if (me == 0) {
         return -1;
     }
-
-    return pCMe->m_pIY->pVTbl->AddRef(pCMe->m_pIY);
+    IEcoUnknown* cast = (IEcoUnknown *)&pCMe->m_pVTblIEcoLab1;
+    return cast->pVTbl->AddRef(cast);
 }
 
 uint32_t ECOCALLMETHOD IEcoCalculatorY_Release (/* in */ IEcoCalculatorY* me) {
@@ -208,7 +212,8 @@ uint32_t ECOCALLMETHOD IEcoCalculatorY_Release (/* in */ IEcoCalculatorY* me) {
         return -1;
     }
 
-    return pCMe->m_pIY->pVTbl->Release(pCMe->m_pIY);
+    IEcoUnknown* cast = (IEcoUnknown *)&pCMe->m_pVTblIEcoLab1;
+    return cast->pVTbl->Release(cast);
 }
 
 int32_t ECOCALLMETHOD IEcoCalculatorY_Multiplication (/* in */ IEcoCalculatorY* me, /* in */ int16_t a, /* in */ int16_t b) {
@@ -336,20 +341,20 @@ IEcoLab1VTbl g_x277FC00C35624096AFCFC125B94EEC90VTbl = {
         CEcoLab1_qsort
 };
 
-IEcoCalculatorXVTbl g_x9322111622484742AE0682819447843DVTblLab2 = {
-        IEcoCalculatorX_QueryInterface,
-        IEcoCalculatorX_AddRef,
-        IEcoCalculatorX_Release,
-        IEcoCalculatorX_Addition,
-        IEcoCalculatorX_Subtraction
-};
-
 IEcoCalculatorYVTbl g_xBD6414C29096423EA90C04D77AFD1CADVTblLab2 = {
         IEcoCalculatorY_QueryInterface,
         IEcoCalculatorY_AddRef,
         IEcoCalculatorY_Release,
         IEcoCalculatorY_Multiplication,
         IEcoCalculatorY_Division
+};
+
+IEcoCalculatorXVTbl g_x9322111622484742AE0682819447843DVTblLab2 = {
+        IEcoCalculatorX_QueryInterface,
+        IEcoCalculatorX_AddRef,
+        IEcoCalculatorX_Release,
+        IEcoCalculatorX_Addition,
+        IEcoCalculatorX_Subtraction
 };
 
 
